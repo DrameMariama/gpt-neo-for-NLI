@@ -1,5 +1,5 @@
 # gpt-neo-for-NLI
-This project aims to finetune the GPTNeo 125M from  Huggingface transformers on the XNLI french dataset for natural language inference task. 
+This project aims to finetune the GPTNeo 125M from  [Huggingface transformers](https://github.com/huggingface/transformers) on the XNLI french dataset for natural language inference task. 
 
 The XNLI dataset is also loaded from the huggingface dataset library. 
 
