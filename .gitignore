@@ -1,2 +1,2 @@
-./gpt-neo-for NLI/checkpoint
-./gpt-neo-for NLI/__pycache__
+./checkpoint
+./__pycache__
