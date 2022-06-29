@@ -1,6 +1,6 @@
 import torch
 from model import load_model
-from dataset import load_data
+from dataset import load_data, load_tokenizer
 from transformers import get_linear_schedule_with_warmup, set_seed
 from torch.optim import Adam
 from sklearn.metrics import accuracy_score
@@ -98,7 +98,9 @@ def train(train_loader, val_loader, model, model_name, optimizer, scheduler, dev
 
 if __name__=="__main__":
     model_name = 'EleutherAI/gpt-neo-125M'
-    tokenizer, train_loader, val_loader, test_loader = load_data(model_name)
+    tokenizer = load_tokenizer(model_name)
+    train_loader = load_data(split='train', tokenizer=tokenizer)
+    val_loader = load_data(split='validation', tokenizer=tokenizer)
     model = load_model(model_name, tokenizer)
     optimizer = Adam(model.parameters(), lr=1e-5)
     epochs = 5

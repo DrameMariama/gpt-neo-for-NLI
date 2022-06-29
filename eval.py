@@ -1,7 +1,8 @@
+from lib2to3.pgen2.tokenize import tokenize
 import torch
 from train import load_checkpoint
 from model import load_model
-from dataset import load_data
+from dataset import load_data, load_tokenizer
 from sklearn.metrics import accuracy_score
 
 def eval(model, test_loader, device):
@@ -22,10 +23,11 @@ if __name__=="__main__":
     ckpt_path = './checkpoint/'
     checkpoint_name = "gptneo.pt"
     model_name = 'EleutherAI/gpt-neo-125M'
-    tokenizer, _, _, test_loader = load_data(model_name)
+    tokenizer = load_tokenizer(model_name)
+    test_loader = load_data(split='test', tokenizer=tokenizer)
     
     model = load_model(model_name, tokenizer)
-    model = load_checkpoint(model, ckpt_path, model_name)
+    model = load_checkpoint(model, ckpt_path, checkpoint_name)
 
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model.to(device)

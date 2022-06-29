@@ -25,22 +25,20 @@ class XnliDataset(Dataset):
 
         return input_ids, attention_mask, labels
 
-def load_data(model_name, batch_size=16, max_len=128):
+def load_tokenizer(tokenizer_name):
     print('----------Instantiating a GPT2Tokenizer-------------')
-    tokenizer = tokenizer = GPT2Tokenizer.from_pretrained(model_name, do_lowercase=True)
+    tokenizer = tokenizer = GPT2Tokenizer.from_pretrained(tokenizer_name, do_lowercase=True)
     tokenizer.add_special_tokens({'pad_token': '[PAD]'})
+    return tokenizer
+
+def load_data(split, tokenizer, batch_size=16, max_len=128):
     print('--------------loading XNLI dataset-----------------')
     xnli_data = load_dataset('xnli', 'fr')
-    train = xnli_data['train']
-    valid = xnli_data['validation']
-    test = xnli_data['test']
-    train_dataset = XnliDataset(train, tokenizer, max_len=max_len)
-    train_loader = DataLoader(train_dataset, batch_size=batch_size)
-    val_dataset = XnliDataset(valid, tokenizer, max_len=max_len)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size)
-    test_dataset = XnliDataset(test, tokenizer, max_len=max_len)
-    test_loader = DataLoader(test_dataset, batch_size=batch_size)
-    return tokenizer, train_loader, val_loader, test_loader
+    data = xnli_data[split]
+    
+    dataset = XnliDataset(data, tokenizer, max_len=max_len)
+    data_loader = DataLoader(dataset, batch_size=batch_size)
+    return data_loader
 
 
 
